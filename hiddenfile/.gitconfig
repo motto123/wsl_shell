@@ -1,0 +1,73 @@
+[user]
+        name = zenglongke
+        email = zenglongke@ghgame.cn
+[credential]
+        helper = store
+
+# vim: set filetype=gitconfig:
+[color]
+	ui = auto
+
+[alias]
+	alias = "!f(){ git config -l | grep alias | sort; };f"
+	st = status
+	cm = commit
+	cma = commit --amend --no-edit
+	cl = "!f() { echo 'Remove following files?'; echo; git clean -dn; echo; echo 'Press ENTER to confirm'; read -p 'Press ^C to stop cleanup and exit' a && git clean -df; }; f"
+	co = checkout
+	cp = cherry-pick
+	br = branch
+	bra = branch -avv --list
+	dc = diff --cached
+	di = diff
+	pl = pull
+	ps = push
+	ds = "stash show stash@{0} -p"
+	ss = "!f(){ git stash show -p stash@{${1}}; };f"
+	sl = stash list
+	sm = submodule
+	sup = submodule update
+	sll = "!f() { for s in `git stash list --pretty=format:%gd`; do git stash show -p $s; done; };f"
+	fa = fetch --all
+	fp = fetch --prune
+	unstash = stash pop
+	ff = "!f(){ B=$(git rev-parse --abbrev-ref HEAD) && git merge --ff-only origin/$B; };f"
+	me = merge --no-ff
+	mm = merge --no-ff -
+	mt = mergetool
+	k = "!f(){ gitk HEAD origin/`git rev-parse --abbrev-ref HEAD`; };f"
+	rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
+	mkbranch = "!f(){ git checkout -b ${1} && git push origin -u ${1}; };f"
+	lg = log --pretty=format:'%C(green)%h%Creset - %s%C(yellow)%d%Creset%n          %aD (%ar %C(red)- %an%Creset)' --graph --color
+	# ll = log --pretty=format:'%C(green)%h%Creset - %s%C(yellow)%d%Creset%n          %aD (%ar %C(red)- %an%Creset)' --graph --color --all
+	puff = "push --force-with-lease"
+	unfuck = "!f(){ git reset --hard origin/`git rev-parse --abbrev-ref HEAD`; rm -rfv `git status --short | grep ^? | cut -d' '  -f2-`; }; f"
+	up = "pull --ff-only --stat --prune"
+	vim = "!f(){ vim -p `git st | cut -c 2- | grep '^M\\|\\?' | cut -d' ' -f2-`; }; f"
+	stash-stage = "!f(){ git stash -- $(git diff --name-only --staged); }; f"
+	sync = !sh /usr/lib/git-core/git-sync.sh
+
+[core]
+	editor = vim
+	pager = less -R
+	# pager = vim # doesn't support colors=(
+	excludesfile = "~/.gitignore"
+[merge]
+	tool = vimdiff
+
+[diff]
+	tool = vimdiff
+	noprefix = true
+	algorithm = patience
+	renames = copies
+
+[pager]
+	diff = "vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'set buftype=nofile' -"
+
+[push]
+	default = simple
+
+[grep]
+	lineNumber = true
+	
+

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+dst=$1
+src=$(git rev-parse --abbrev-ref HEAD)
+
+if [[ -z "${dst}" ]]; then
+        echo "dst is empty string"
+        exit 0
+fi
+
+echo "git pull origin $src"
+git pull origin $src
+if [[ ! $? -eq 0 ]]; then
+	echo "the suggestion, you can run a command of git push origin $src"
+        exit 0
+fi
+
+echo -e "\ngit pull origin $dst\n"
+git pull origin $dst
+if [[ ! $? -eq 0 ]]; then
+	echo "the suggestion, you can run a command of git push origin $dst"
+        exit 0
+fi
+
+echo -e "\ngit push origin $src"
+git push origin $src 2>> /dev/null
+if [[ ! $? -eq 0 ]]; then
+        exit 0
+fi
+
+echo -e "\ngit checkout $dst"
+git checkout $dst
+if [[ ! $? -eq 0 ]]; then
+        exit 0
+fi
+
+echo -e "\ngit merge $src"
+git merge $src
+if [[ ! $? -eq 0 ]]; then
+        exit 0
+fi
+
+echo -e "\ngit push origin $dst"
+git push origin $dst
+if [[ ! $? -eq 0 ]]; then
+        exit 0
+fi
+
+echo -e "\ngit checkout $src"
+git checkout $src
